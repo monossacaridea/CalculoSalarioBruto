@@ -1,0 +1,78 @@
+ /* 
+ATIVIDADE AVALIATIVA
+ Aluna: Beatriz Lisbôa de Freitas
+ RA: 22401492
+ Programação para Web
+ */
+ 
+ body {     /* Fundo da Página */
+            background-color: ghostwhite;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .campo_entrada {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        }
+        
+        .container-custom {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .card-custom {
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            background: white;
+        }
+        .card-header-custom {
+            background-color: steelblue;
+            color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+        }
+        .card-body-custom {
+            width: 900px;
+            padding: 30px;
+        }
+        .btn-calculate {
+            background-color: rgb(25, 63, 121);
+            border: none;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            width: 100%;
+        }
+        
+        .res_satisfatorio {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .res_insatisfatorio {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .texto-destaque {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .texto-ajuda {
+            color: #6c757d;
+            font-size: 14px;
+        }
