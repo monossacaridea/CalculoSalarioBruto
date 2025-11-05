@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Salário Líquido</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <table class="container-custom">
+        <tr>
+            <td>
+                <table class="card-custom" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="card-header-custom text-center">
+                            <h1>Cálculo de Salário Líquido <br> Funcionário Horista</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="card-body-custom">
+                            <form id="salaryForm">
+                                <table width="100%">
+                                    <tr>
+                                        <td class="form-group">
+                                            <label for="js_qht"><b>Quantidade de Horas Trabalhadas no Mês:</b></label><br>
+                                            <input type="number" class="campo_entrada" id="js_qht" 
+                                                   min="135" max="180" required 
+                                                   placeholder="Digite entre 135 e 180">
+                                            <p class="msg_ajuda">Valor deve estar entre 135 e 180 horas</p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="form-group">
+                                            <label for="js_vht"><b>Valor da Hora de Trabalho (R$):</b></label><br>
+                                            <input type="number" class="campo_entrada" id="js_vht" 
+                                                   min="25" max="70" step="0.01" required 
+                                                   placeholder="Digite entre 25 e 70">
+                                            <p class="msg_ajuda">Valor deve estar entre R$ 25,00 e R$ 70,00</p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="form-group">
+                                            <label for="js_inss"><b>Percentual de Desconto do INSS (%):</b></label><br>
+                                            <input type="number" class="campo_entrada" id="js_inss" 
+                                                   min="5" max="15" required 
+                                                   placeholder="Digite entre 5 e 15">
+                                            <p class="msg_ajuda">Percentual deve estar entre 5% e 15%</p>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="form-group">
+                                            <button type="button" class="btn-calculate" onclick="calcularSalario()">
+                                                Calcular Salário Líquido
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                            <br>
+                            <table id="resultado" width="100%" style="display: none;"></table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Função para calcular o salário líquido
+        function calcularSalario() {
+            var js_qht = parseFloat(document.getElementById('js_qht').value); // qht - quantidade de horas trabalhadas
+            var js_vht = parseFloat(document.getElementById('js_vht').value); // vht - valor da hora de trabalho
+            var js_inss = parseFloat(document.getElementById('js_inss').value); // inss - percentual de desconto do inss
+            
+            // Validação dos valores
+            if (isNaN(js_qht) || js_qht < 135 || js_qht > 180) {
+                window.alert("ERRO: Quantidade de horas trabalhadas deve estar entre 135 e 180!");
+                return false;
+            }
+            
+            if (isNaN(js_vht) || js_vht < 25 || js_vht > 70) {
+                window.alert("ERRO: Valor da hora de trabalho deve estar entre R$ 25,00 e R$ 70,00!");
+                return false;
+            }
+            
+            if (isNaN(js_inss) || js_inss < 5 || js_inss > 15) {
+                window.alert("ERRO: Percentual de desconto do INSS deve estar entre 5% e 15%!");
+                return false;
+            }
+            
+            // Cálculos
+            var salarioBruto = js_qht * js_vht;
+            var descontoINSS = salarioBruto * (js_inss / 100);
+            var salarioLiquido = salarioBruto - descontoINSS;
+            
+            // Classificando os salários
+            var classificacao = "";
+            var classeResultado = "";
+            
+            if (salarioLiquido <= 3000) {
+                classificacao = "Salário Insatisfatório! (menor ou igual a R$ 3.000,00)";
+                classeResultado = "res_insatisfatorio";
+            } else if (salarioLiquido <= 4500) {
+                classificacao = "Salário Baixo! (entre R$ 3.000,01 e R$ 4.500,00)";
+                classeResultado = "res_insatisfatorio";
+            } else if (salarioLiquido <= 6000) {
+                classificacao = "Salário Médio! (entre R$ 4.500,01 e R$ 6.000,00)";
+                classeResultado = "res_satisfatorio";
+            } else {
+                classificacao = "Salário Alto! (maior que R$ 6.000,00)";
+                classeResultado = "res_satisfatorio";
+            }
+            
+            // Mostrar resultados
+            var resultadoTable = document.getElementById('resultado');
+            resultadoTable.innerHTML = `
+                <tr>
+                    <td class="${classeResultado}">
+                        <h2>DEMONSTRATIVO PARA CÁLCULO DO SALÁRIO LÍQUIDO</h2>
+                        
+                        <table width="100%" cellpadding="10">
+                            <tr>
+                                <td width="33%">
+                                    <b>Horas Trabalhadas:</b><br>
+                                    <span class="texto-destaque">${js_qht} horas</span>
+                                </td>
+                                <td width="33%">
+                                    <b>Valor Hora:</b><br>
+                                    <span class="texto-destaque">R$ ${js_vht.toFixed(2)}</span>
+                                </td>
+                                <td width="33%">
+                                    <b>Desconto INSS:</b><br>
+                                    <span class="texto-destaque">${js_inss}%</span>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <hr>
+                        
+                        <table width="100%" cellpadding="10">
+                            <tr>
+                                <td width="33%">
+                                    <b>Salário BRUTO:</b><br>
+                                    <span class="texto-destaque">R$ ${salarioBruto.toFixed(2)}</span>
+                                </td>
+                                <td width="33%">
+                                    <b>Desconto INSS:</b><br>
+                                    <span class="texto-destaque">R$ ${descontoINSS.toFixed(2)}</span>
+                                </td>
+                                <td width="33%">
+                                    <b>Salário LÍQUIDO:</b><br>
+                                    <span class="texto-destaque">R$ ${salarioLiquido.toFixed(2)}</span>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <hr>
+                        
+                        <table width="100%">
+                            <tr>
+                                <td align="center">
+                                    <h3>${classificacao}</h3>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            `;
+            
+            resultadoTable.style.display = 'table';
+            
+            return false;
+        }
+
+        // Adicionar evento de Enter nos inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            var inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(function(input) {
+                input.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        calcularSalario();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
